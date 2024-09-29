@@ -4,15 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import ua.privat.regulatoryservice.dto.RegularPaymentDTO;
 import ua.privat.regulatoryservice.dto.WiringDTO;
 import ua.privat.regulatoryservice.exceptions.ServiceErrorException;
-import ua.privat.regulatoryservice.model.RegularPayment;
-import ua.privat.regulatoryservice.model.Wiring;
 
 import java.sql.Timestamp;
 import java.util.List;
