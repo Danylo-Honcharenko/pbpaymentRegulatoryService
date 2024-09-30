@@ -1,5 +1,6 @@
 package ua.privat.regulatoryservice.service;
 
+import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
@@ -12,7 +13,6 @@ import ua.privat.regulatoryservice.dto.RegularPaymentDTO;
 import ua.privat.regulatoryservice.dto.WiringDTO;
 import ua.privat.regulatoryservice.exceptions.ServiceErrorException;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,18 +20,19 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class WiringService {
 
-    private final WebClient webClient;
+    private final WebClient webClientBusiness;
+    private final WebClient webClientData;
 
     public void createWiring(List<RegularPaymentDTO> regularPayment) {
         regularPayment.forEach(regPayment -> {
             WiringDTO wiringDTO = WiringDTO.builder()
-                    .wiringTime(String.valueOf(new Timestamp(System.currentTimeMillis())))
+                    .wiringTime(regPayment.getWriteOffDate())
                     .paymentInstructionsId(Long.valueOf(regPayment.getId()))
                     .paymentAmount(regPayment.getPaymentAmount())
                     .status("A")
                     .build();
 
-            ResponseEntity<WiringDTO> wiringDTOResponseEntity = webClient.post()
+            ResponseEntity<WiringDTO> wiringDTOResponseEntity = webClientBusiness.post()
                     .uri("/create-wiring")
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                     .body(Mono.just(wiringDTO), WiringDTO.class)
@@ -44,11 +45,7 @@ public class WiringService {
                     .block();
 
             if (wiringDTOResponseEntity != null) {
-                WebClient client = WebClient.builder()
-                        .baseUrl("http://localhost:8080/api")
-                        .build();
-
-                client.patch()
+                webClientData.patch()
                         .uri("/update-write-off-date/{id}", Objects.requireNonNull(wiringDTOResponseEntity.getBody()).getPaymentInstructionsId())
                         .retrieve()
                         .onStatus(HttpStatusCode::is4xxClientError,

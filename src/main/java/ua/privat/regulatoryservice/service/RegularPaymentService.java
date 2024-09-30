@@ -15,10 +15,10 @@ import java.util.stream.StreamSupport;
 @RequiredArgsConstructor
 public class RegularPaymentService {
 
-    private final WebClient webClient;
+    private final WebClient webClientBusiness;
 
     public List<RegularPaymentDTO> checkPaymentsForTheNeedToWriteOff() {
-        Iterable<RegularPaymentDTO> regularPaymentDTOS = webClient.get()
+        Iterable<RegularPaymentDTO> regularPaymentDTOS = webClientBusiness.get()
                 .uri("/write-off-payment")
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
