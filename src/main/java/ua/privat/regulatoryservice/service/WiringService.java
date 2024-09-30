@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -13,6 +14,7 @@ import ua.privat.regulatoryservice.exceptions.ServiceErrorException;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +31,7 @@ public class WiringService {
                     .status("A")
                     .build();
 
-            webClient.post()
+            ResponseEntity<WiringDTO> wiringDTOResponseEntity = webClient.post()
                     .uri("/create-wiring")
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                     .body(Mono.just(wiringDTO), WiringDTO.class)
@@ -40,6 +42,20 @@ public class WiringService {
                             error -> Mono.error(new ServiceErrorException("The service returned an error with status code 4xx. More details: status code " + error.statusCode().value() + " error URL " + error.request().getURI())))
                     .toEntity(WiringDTO.class)
                     .block();
+
+            if (wiringDTOResponseEntity != null) {
+                WebClient client = WebClient.builder()
+                        .baseUrl("http://localhost:8080/api")
+                        .build();
+
+                client.patch()
+                        .uri("/update-write-off-date/{id}", Objects.requireNonNull(wiringDTOResponseEntity.getBody()).getPaymentInstructionsId())
+                        .retrieve()
+                        .onStatus(HttpStatusCode::is4xxClientError,
+                                error -> Mono.error(new ServiceErrorException("The service returned an error with status code 4xx. More details: status code " + error.statusCode().value() + " error URL " + error.request().getURI())))
+                        .toEntity(WiringDTO.class)
+                        .block();
+            }
         });
     }
 }
