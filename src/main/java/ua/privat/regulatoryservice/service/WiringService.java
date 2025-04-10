@@ -1,14 +1,10 @@
 package ua.privat.regulatoryservice.service;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-import ua.privat.PaymentApiUtilI;
-import ua.privat.regulatoryservice.exceptions.ServiceErrorException;
+import ua.privat.clientlib.utils.PaymentApiUtilI;
 import ua.privat.utils.dto.RegularPaymentDTO;
 import ua.privat.utils.dto.WiringDTO;
 

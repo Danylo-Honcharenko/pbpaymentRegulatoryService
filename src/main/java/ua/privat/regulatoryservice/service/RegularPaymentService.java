@@ -3,7 +3,7 @@ package ua.privat.regulatoryservice.service;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import ua.privat.PaymentApiUtilI;
+import ua.privat.clientlib.utils.PaymentApiUtilI;
 import ua.privat.utils.dto.RegularPaymentDTO;
 
 import java.util.List;
