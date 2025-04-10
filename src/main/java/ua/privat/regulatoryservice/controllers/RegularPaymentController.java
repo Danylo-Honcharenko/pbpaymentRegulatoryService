@@ -5,9 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ua.privat.regulatoryservice.dto.RegularPaymentDTO;
 import ua.privat.regulatoryservice.service.RegularPaymentService;
 import ua.privat.regulatoryservice.service.WiringService;
+import ua.privat.utils.dto.RegularPaymentDTO;
 
 import java.util.List;
 

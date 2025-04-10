@@ -7,14 +7,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class WebClientConfig {
 
-    @Bean
+    @Bean("webClientBusiness")
     public WebClient webClientBusiness() {
         return WebClient.builder()
                 .baseUrl("http://localhost:8081/api")
                 .build();
     }
 
-    @Bean
+    @Bean("webClientData")
     public WebClient webClientData() {
         return WebClient.builder()
                 .baseUrl("http://localhost:8080/api")
