@@ -51,11 +51,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>ua.privat.utils</groupId>
-            <artifactId>PaymentDTO</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>ua.privat</groupId>
             <artifactId>PaymentClientLib</artifactId>
             <version>1.0-SNAPSHOT</version>
